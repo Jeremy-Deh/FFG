@@ -2,112 +2,38 @@
 <html>
 <head>
   <title>FFG</title>
-  <style>
-    body {
-      background-color: #f2f2f2;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 400px;
-      margin: 0 auto;
-      background-color: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .input-text {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-
-    .btn {
-      background-color: #4CAF50;
-      color: #a52323;
-      border: none;
-      border-radius: 5px;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      background-color: #45a049;
-    }
-
-    .result {
-      margin-top: 20px;
-      padding: 10px;
-      background-color: #eee;
-      border-radius: 5px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .column {
-    flex-basis: 50%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .column p {
-    margin: 0;
-  }
-
-  .menu {
-  background-color: #f1f1f1;
-  width: 200px;
-  height: 100vh;
-  padding: 10px;
-}
-
-.menu ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.menu ul li {
-  margin-bottom: 10px;
-}
-
-.menu ul li a {
-  text-decoration: none;
-  color: #333;
-}
-  </style>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <div style="display: flex;">
     <div style="flex: 0 0 auto; width: 15%;">
-      <div class="container" style="display: inline-block; float: left;">
-        <h1>FFG</h1>
-        <div class="result">          
-          <a href="https://github.com/Jeremy-Deh/NetworkAnalysisOfGoCompetitors/raw/main/FR_LeReseauDeGoEnFrance.pdf" target="_blank">Analyse du réseau de Go français</a> 
-        </div>
-        <form action="/" method="POST">
-          <input type="text" name="text" class="input-text" placeholder="Entrez le nom d'un joueur">
-          <button type="submit" style="background-color: #8380f0; color: #000000; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;">Valider</button>
-
-        </form>
-        
-      </div>
+            
       <div class="menu">
-        <ul>
-          <li><a href="{{ url_for('index') }}">Accueil</a></li>
-          <li><a href="{{ url_for('run_network') }}">Network</a></li>
-          <li><a href="{{ url_for('stat_ffg') }}">Statistiques FFG</a></li>
-        </ul>
+        <aside class="sidebar">
+          <header>
+         
+          </header>
+          <nav class="sidebar-nav">
+            <!--<div class="container" style="display: inline-block; float: left;">-->
+              <div style="margin-top:20px;">
+                <form action="/" method="POST"  style="margin-left:10px;">
+                  <input type="text" name="text" class="input-text" placeholder="Entrez le nom d'un joueur" style="width:200px" >
+                  <button type="submit" style="background-color: #8380f0; color: #000000; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;  margin-bottom: 20px;">Valider</button>
+
+                </form>
+              </div>
+            <!--</div>-->
+            <ul style="margin-left:10px;">
+              <li><a href="{{ url_for('index') }}">Accueil</a></li>
+              <li><a href="{{ url_for('run_network') }}">Network</a></li>
+              <li><a href="{{ url_for('stat_ffg') }}">Statistiques FFG</a></li>
+              <li><a href="https://github.com/Jeremy-Deh/NetworkAnalysisOfGoCompetitors/raw/main/FR_LeReseauDeGoEnFrance.pdf" target="_blank">Analyse du réseau de Go</a> </li>
+            </ul>
+          </nav>
+        </aside>
       </div>
-      
-    </div>
+  
+  </div>
     
     <div style="flex: 0 0 auto; width: 60%;">
       
