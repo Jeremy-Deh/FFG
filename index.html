@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FFG</title>
+  <style>
+    body {
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-text {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .btn {
+      background-color: #4CAF50;
+      color: #a52323;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #45a049;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #eee;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .column {
+    flex-basis: 50%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .column p {
+    margin: 0;
+  }
+
+  .menu {
+  background-color: #f1f1f1;
+  width: 200px;
+  height: 100vh;
+  padding: 10px;
+}
+
+.menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu ul li {
+  margin-bottom: 10px;
+}
+
+.menu ul li a {
+  text-decoration: none;
+  color: #333;
+}
+  </style>
+</head>
+<body>
+  <div style="display: flex;">
+    <div style="flex: 0 0 auto; width: 15%;">
+      <div class="container" style="display: inline-block; float: left;">
+        <h1>FFG</h1>
+        <div class="result">          
+          <a href="https://github.com/Jeremy-Deh/NetworkAnalysisOfGoCompetitors/raw/main/FR_LeReseauDeGoEnFrance.pdf" target="_blank">Analyse du réseau de Go français</a> 
+        </div>
+        <form action="/" method="POST">
+          <input type="text" name="text" class="input-text" placeholder="Entrez le nom d'un joueur">
+          <button type="submit" style="background-color: #8380f0; color: #000000; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;">Valider</button>
+
+        </form>
+        
+      </div>
+      <div class="menu">
+        <ul>
+          <li><a href="{{ url_for('index') }}">Accueil</a></li>
+          <li><a href="{{ url_for('run_network') }}">Network</a></li>
+          <li><a href="{{ url_for('stat_ffg') }}">Statistiques FFG</a></li>
+        </ul>
+      </div>
+      
+    </div>
+    
+    <div style="flex: 0 0 auto; width: 60%;">
+      
+      <div class="container" style="width: 400px; height: 400px; margin: 0 auto; clear: both; text-align: left;display: inline-block; float: right;">
+        <h1>Géographie :</h1>
+        {{ geographie | safe }}
+      </div>
+  
+      <div class="result" style="overflow: auto; max-height:800px;width:700px;display: inline-block; float: left;">
+        <div class="container" >
+          <h1>Tournois :</h1>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:100px">Date</th>
+                <th style="width:250px">Lieu</th>
+                <th style="width:350px">Tournoi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if result %}
+              {% for  index, row in listeTournois.iterrows() %}
+                <tr>
+                    <td>{{ row['date'] }}</td>
+                    <td>{{ row['lieu'] }}</td>
+                    <td><a href="{{ row['lien'] }}" target="_blank">{{ row['tournoi'] }}</a></td>
+                </tr>
+                {% endfor %}
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div style="text-align: center;float: right;">
+        <img src="data:image/png;base64,{{ img_base64 }}" alt="Historique" width="400" height="350">
+      </div>
+
+
+    </div>
+    
+    <div style="flex: 0 0 auto; width: 20%;">
+      <div class="container" style="display: inline-block; float: right;">
+        <h1>Informations :</h1>
+        <h3><a href="{{ adressejoueurffg }}" target="_blank">{{ nomjoueur }} {{rang}}</a></h3>
+        <div class="infos">
+          {% if result %}
+          <ul>
+            <li>Premier tournoi : {{premierTournoi}}</li>
+            <li>Nombre de tournois : {{ NbTournois }}</li>
+            <li>Nombre de matchs : {{ NbMatchs }}</li>
+            <li>Nombre d'adversaires : {{ NbAdversaires }}</li>
+            <li>Nombre de victoires : {{ NbVictoires }}</li>
+            <li>Nombre de défaites : {{ NbDefaites }}</li>
+          </ul>
+          {% endif %}
+        </div>
+      </div>
+      <div class="container" style="display: inline-block; float: left;">
+        <h1>Statistiques récentes</h1>
+        
+        <div class="result">
+          <div class="column">
+            <h4>Victoires : ~{{moyG}}</h4>
+            <ul>
+              {% for item in gagne %}
+              <li>{{ item }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="column">
+            <h4>Défaites : ~{{moyP}}</h4>
+            <ul>
+              {% for item in perdu %}
+              <li>{{ item }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+
+</body>
+
+
+  
+  
+  
+  
+</html>

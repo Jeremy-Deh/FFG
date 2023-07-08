@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FFG</title>
+  <style>
+    body {
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-text {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .btn {
+      background-color: #4CAF50;
+      color: #a52323;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #45a049;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #eee;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .column {
+    flex-basis: 50%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .column p {
+    margin: 0;
+  }
+
+  .menu {
+  background-color: #f1f1f1;
+  width: 200px;
+  height: 100vh;
+  padding: 10px;
+}
+
+.menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu ul li {
+  margin-bottom: 10px;
+}
+
+.menu ul li a {
+  text-decoration: none;
+  color: #333;
+}
+.square {
+        max-width: 300px;
+        height: auto;
+        background-color: green;
+        margin: 0 auto;
+        color: white;
+        font-size: 20px;
+    }
+.squareArrondi {
+  border: 2px solid black;
+  margin: 0 auto;
+  max-width: 250px;
+  background-color: #8fb5c8;
+  border-radius: 10px;
+}
+  </style>
+</head>
+<body>
+    <div style="display: flex;">
+        <div style="flex: 0 0 auto; width: 15%;">
+            <div class="container" style="display: inline-block; float: left;">
+                <h1>FFG</h1>
+                <div class="result">          
+                    <a href="https://github.com/Jeremy-Deh/NetworkAnalysisOfGoCompetitors/raw/main/FR_LeReseauDeGoEnFrance.pdf" target="_blank">Analyse du réseau de Go</a> 
+                </div>
+                <form action="/network" method="POST">
+                    <input type="text" name="toi" class="input-text" placeholder="Entrez votre nom">
+                    <input type="text" name="autre" class="input-text" placeholder="Entrez le nom d'un joueur">
+                    <button type="submit" style="background-color: #8380f0; color: #000000; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;">Valider</button>
+                </form>
+          
+            </div>
+            <div class="menu">
+                <ul>
+                    <li><a href="{{ url_for('index') }}">Accueil</a></li>
+                    <li><a href="{{ url_for('run_network') }}">Network</a></li>
+                    <li><a href="{{ url_for('stat_ffg') }}">Statistiques FFG</a></li>
+                </ul>
+            </div>
+        
+        </div>
+        <div style="display:flex; width: 60%;justify-content: center;">
+            {% if resp %}
+            <div class="container" style="height:auto; max-width: 800px;max-height:1000px; text-align: center;">
+                {% if resp == "path" %}
+                    <h2>Chemin le plus court entre {{joueur1}} et {{joueur2}}</h2>
+                    {{pathway | safe}}
+                {% elif resp == "df" %}
+                    <h2>Historique entre {{joueur1}} et {{joueur2}}</h2>
+                    <table>
+                        <thead>
+                          <tr>
+                            <th style="width:100px">Date</th>
+                            <th style="width:250px">Vainqueur</th>
+                            <th style="width:350px">Tournoi</th>
+                            <th style="width:250px">Lieu</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                    {% for  index, row in pathway.iterrows() %}
+                        <tr>
+                            <td>{{ row['date'] }}</td>
+                            <td>{{ row['vainqueur']}}</td>
+                            <td><a href="{{ row['lien'] }}" target="_blank">{{ row['tournoi'] }}</a></td>
+                            <td>{{ row['lieu'] }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
